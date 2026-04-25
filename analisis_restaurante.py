@@ -1,6 +1,6 @@
 import csv
 
-restaurante = encuestado = {
+restaurante = {
     "id": [],  # id son numeros, deberia ser usando con int()
     "preferencias": {"comida": [], "frecuencia": []},  # comida deberia ser una
     # lista de strings de comida
@@ -20,7 +20,7 @@ restaurante = encuestado = {
     },
     #
 }
-with open("encuestas_restaurantes.csv", "r") as encuestas:
+with open("encuesta_restaurantes_10000.csv", "r") as encuestas:
     datos_restaurante = csv.DictReader(encuestas)
     # se llena el diccionario con el contenido de los datos del restaurante
     # lo valores van convertidos al formato esperado
