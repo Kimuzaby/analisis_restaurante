@@ -20,6 +20,8 @@ restaurante = {
     },
     #
 }
+separador_de_reportes = "------------------------------------------------------------------------------------------------------------"
+
 with open("encuesta_restaurantes_10000.csv", "r") as encuestas:
     datos_restaurante = csv.DictReader(encuestas)
     # se llena el diccionario con el contenido de los datos del restaurante
@@ -90,11 +92,35 @@ def reporte_5():
 
 
 def reporte_6():
-    pass
+    print(separador_de_reportes)
+    print(f"Reporte 6: distribucion del tiempo de entrega de pedidos")
+    tiempos_entrega = {"Rápido": 0, "Aceptable": 0, "Lento": 0}
+    for conteo in restaurante["experiencia"]["tiempo"]:
+        if conteo in tiempos_entrega:
+            tiempos_entrega[conteo] += 1
+    pedidos_rapido = tiempos_entrega["Rápido"]
+    pedidos_aceptable = tiempos_entrega["Aceptable"]
+    pedidos_lento = tiempos_entrega["Lento"]
+    total_pedidos = pedidos_aceptable + pedidos_rapido + pedidos_lento
+    porcentaje_pedidos_rapidos = (pedidos_rapido / total_pedidos) * 100
+    porcentaje_pedidos_aceptables = (pedidos_aceptable / total_pedidos) * 100
+    porcentaje_pedidos_lentos = (pedidos_lento / total_pedidos) * 100
+    print(separador_de_reportes)
+
+    print(
+        f"total pedidos rapidos: {pedidos_rapido}, total pedidos aceptables: {pedidos_aceptable}, total pedidos lentos: {pedidos_lento}"
+    )
+    print(
+        f"porcentaje pedidos rapidos: {porcentaje_pedidos_rapidos}%, porcentaje pedidos aceptables: {porcentaje_pedidos_aceptables}%, porcentaje pedidos lentos: {porcentaje_pedidos_lentos}%"
+    )
+    print(separador_de_reportes)
+
+
+reporte_6()
 
 
 def reporte_7():
-    pass
+    percepcion_precios
 
 
 def reporte_8():
