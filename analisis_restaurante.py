@@ -260,22 +260,99 @@ def reporte_14():
 def reporte_15():
     pass
 
-
+# Precio vs recomendación  
 def reporte_16():
-    pass
+    print("\nReporte 16: Precio vs Recomendación")
+    precios = restaurante["experiencia"]["precio"]
+    recomendaciones = restaurante["nps"]["recomendacion"]
+
+    # Agrupar las sumas y conteo de precios
+    resumen = {}
+    for precio, rec in zip(precios, recomendaciones):
+        if precio not in resumen:
+            resumen[precio] = {"suma": 0, "cantidad": 0}
+        resumen[precio]["suma"] += rec
+        resumen[precio]["cantidad"] += 1
+
+    # Imprimir promedios
+    for precio, datos in resumen.items():
+        promedio = datos["suma"] / datos["cantidad"]
+        print(f"Precio: {precio.capitalize():<10} | Promedio de Recomendación: {promedio:.2f} / 10")
 
 
+# Tiempo de entrega vs satisfacción  
 def reporte_17():
-    pass
+    print("\nReporte 17: Tiempo de Entrega vs Satisfacción General")
+    tiempos = restaurante["experiencia"]["tiempo"]
+    satisfaccion = restaurante["nps"]["general"]
 
+    resumen = {}
+    for tiempo, sat in zip(tiempos, satisfaccion):
+        if tiempo not in resumen:
+            resumen[tiempo] = {"suma": 0, "cantidad": 0}
+        resumen[tiempo]["suma"] += sat
+        resumen[tiempo]["cantidad"] += 1
 
+    for tiempo, datos in resumen.items():
+        promedio = datos["suma"] / datos["cantidad"]
+        print(f"Tiempo de entrega: {tiempo.capitalize():<10} | Satisfacción General Promedio: {promedio:.2f} / 10")
+
+# Ranking de comidas más consumidas  
 def reporte_18():
-    pass
+    print("\nReporte 18: Ranking de Comidas Más Consumidas")
+    comidas = restaurante["preferencias"]["comida"]
 
+    # Contar cuántas veces se repite cada comida
+    conteo = {}
+    for comida in comidas:
+        conteo[comida] = conteo.get(comida, 0) + 1
 
+    # Ordenar el diccionario de mayor a menor según su cantidad
+    ranking = sorted(conteo.items(), key=lambda x: x[1], reverse=True)
+
+    for i, (comida, cantidad) in enumerate(ranking, 1):
+        print(f"{i}. {comida:<15} | Consumida por: {cantidad} clientes")
+
+# Promedio general por tipo de comida 
 def reporte_19():
-    pass
+    print("\nReporte 19: Promedio General por Tipo de Comida")
+    comidas = restaurante["preferencias"]["comida"]
+    satisfaccion = restaurante["nps"]["general"]
 
+    resumen = {}
+    for comida, sat in zip(comidas, satisfaccion):
+        if comida not in resumen:
+            resumen[comida] = {"suma": 0, "cantidad": 0}
+        resumen[comida]["suma"] += sat
+        resumen[comida]["cantidad"] += 1
 
+    promedios = []
+    for comida, datos in resumen.items():
+        promedio = datos["suma"] / datos["cantidad"]
+        promedios.append((comida, promedio))
+
+    # Ordenar por promedio más alto
+    promedios.sort(key=lambda x: x[1], reverse=True)
+
+    for comida, prom in promedios:
+        print(f"Comida: {comida:<15} | Satisfacción General Promedio: {prom:.2f} / 10")
+
+# Perfil del cliente promedio
 def reporte_20():
-    pass
+    print("\nReporte 20: Perfil del Cliente Promedio")
+    total_clientes = len(restaurante["id"])
+    
+    if total_clientes == 0:
+        print("No hay datos cargados para analizar.")
+        return
+
+    # Funciones internas para no repetir código
+    def calcular_promedio(lista):
+        return sum(lista) / len(lista)
+
+    def obtener_moda(lista):
+        conteo = {}
+        for item in lista:
+            conteo[item] = conteo.get(item, 0) + 1
+        # Obtener la llave con el valor más alto
+        return max(conteo.items(), key=lambda x: x[1])[0]
