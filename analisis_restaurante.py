@@ -91,9 +91,12 @@ def reporte_5():
     pass
 
 
+# pasa por todas las filas de la columna experiencia tiempo, por cada coincidencia, se en
+# 1 el contador del diccionario y se muestra el porcentaje
 def reporte_6():
     print(separador_de_reportes)
-    print(f"Reporte 6: distribucion del tiempo de entrega de pedidos")
+    print("Reporte 6: distribucion del tiempo de entrega de pedidos")
+    print(separador_de_reportes)
     tiempos_entrega = {"Rápido": 0, "Aceptable": 0, "Lento": 0}
     for conteo in restaurante["experiencia"]["tiempo"]:
         if conteo in tiempos_entrega:
@@ -105,34 +108,137 @@ def reporte_6():
     porcentaje_pedidos_rapidos = (pedidos_rapido / total_pedidos) * 100
     porcentaje_pedidos_aceptables = (pedidos_aceptable / total_pedidos) * 100
     porcentaje_pedidos_lentos = (pedidos_lento / total_pedidos) * 100
-    print(separador_de_reportes)
 
-    print(
-        f"total pedidos rapidos: {pedidos_rapido}, total pedidos aceptables: {pedidos_aceptable}, total pedidos lentos: {pedidos_lento}"
-    )
-    print(
-        f"porcentaje pedidos rapidos: {porcentaje_pedidos_rapidos}%, porcentaje pedidos aceptables: {porcentaje_pedidos_aceptables}%, porcentaje pedidos lentos: {porcentaje_pedidos_lentos}%"
-    )
+    print(f"""
+    total pedidos rapidos: {pedidos_rapido},
+    total pedidos aceptables: {pedidos_aceptable},
+    total pedidos lentos: {pedidos_lento}
+    """)
+    print(f"""
+    porcentaje pedidos rapidos: {porcentaje_pedidos_rapidos}%,
+    porcentaje pedidos aceptables: {porcentaje_pedidos_aceptables}%,
+    porcentaje pedidos lentos: {porcentaje_pedidos_lentos}%
+    """)
     print(separador_de_reportes)
 
 
 reporte_6()
 
 
+# por cada coincidencia con la percepcion de precios se aumenta el contador, se calcula
+# el porcentaje
 def reporte_7():
-    percepcion_precios
+    print("Reporte 7: distribucion de percepcion de precios")
+    print(separador_de_reportes)
+    percepcion_precios = {"Alto": 0, "Medio": 0, "Bajo": 0}
+    experiencia_precio = restaurante["experiencia"]["precio"]
+    for conteo in experiencia_precio:
+        if conteo in percepcion_precios:
+            percepcion_precios[conteo] += 1
+    percepcion_precios_alto = percepcion_precios["Alto"]
+    percepcion_precios_medio = percepcion_precios["Medio"]
+    percepcion_precios_bajo = percepcion_precios["Bajo"]
+    total_percepciones = (
+        percepcion_precios_alto + percepcion_precios_medio + percepcion_precios_bajo
+    )
+    porcentaje_precio_alto = (percepcion_precios_alto / total_percepciones) * 100
+    porcentaje_precio_medio = (percepcion_precios_medio / total_percepciones) * 100
+    porcentaje_precio_bajo = (percepcion_precios_bajo / total_percepciones) * 100
+    print(f"""
+    personas que persiven precios altos: {percepcion_precios_alto}, 
+    personas que persiven precios medios: {percepcion_precios_medio},
+    personas que persiven precios bajos: {percepcion_precios_bajo}
+    """)
+    print(f"""
+    porcentaje de personas que persiven precios altos: {porcentaje_precio_alto}%,
+    porcentaje de personas que persiven precios medios: {porcentaje_precio_medio}%,
+    porcentaje de personas que persiven precios bajos: {porcentaje_precio_bajo}%
+    """)
+    print(separador_de_reportes)
 
 
+reporte_7()
+
+
+# suma todas las recomendaciones y las divide entre su longitud, a 2 decimales
 def reporte_8():
-    pass
+    print("Reporte 8: promedio de satisfaccion general")
+    print(separador_de_reportes)
+    recomendacion = restaurante["nps"]["recomendacion"]
+    # print(recomendacion)
+    print(f"""
+    promedio de satisfaccion general: {sum(recomendacion) / len(recomendacion):.2f}
+    """)
+    print(separador_de_reportes)
 
 
+reporte_8()
+
+
+# por cada coincidencia en los valores true y false se aumenta el contador y se muestran
+# las estadisticas de total y porcentajes
 def reporte_9():
-    pass
+    print("Reporte 9: porcentaje de clientes que volverian")
+    print(separador_de_reportes)
+    clientes_volverian = restaurante["nps"]["volveria"]
+    volverian = {"si": 0, "no": 0}
+    for valor in clientes_volverian:
+        if valor == True:
+            volverian["si"] += 1
+        if valor == False:
+            volverian["no"] += 1
+
+    clientes_que_volverian = volverian["si"]
+    clientes_que_no_volverian = volverian["no"]
+    total = clientes_que_no_volverian + clientes_que_volverian
+    porcentaje_volverian = (clientes_que_volverian / total) * 100
+    porcentaje_no_volverian = (clientes_que_no_volverian / total) * 100
+    print(f""" 
+    cantidad de clientes que volverian: {clientes_que_volverian}
+    cantidad de clientes que no volverian: {clientes_que_no_volverian}
+    porcentaje de clientes que regresarian: {porcentaje_volverian:.2f}%
+    porcentaje de clientes que no regresarian: {porcentaje_no_volverian:.2f}
+    """)
+    print(separador_de_reportes)
 
 
+reporte_9()
+
+
+# por cada recomendacion en el NPS se aumenta el contador, se aplica la formula:
+# NPS = %promotores - %detractores
 def reporte_10():
-    pass
+    print("Reporte 10:")
+    print(separador_de_reportes)
+
+    recomendacion = restaurante["nps"]["recomendacion"]
+    total = len(recomendacion)
+
+    conteo = {"promotores": 0, "pasivos": 0, "detractores": 0}
+
+    for recomendados in recomendacion:
+        if recomendados >= 9:
+            conteo["promotores"] += 1
+        elif recomendados >= 7:
+            conteo["pasivos"] += 1
+        else:
+            conteo["detractores"] += 1
+
+    porcentajes = {
+        "promotores": (conteo["promotores"] / total) * 100,
+        "pasivos": (conteo["pasivos"] / total) * 100,
+        "detractores": (conteo["detractores"] / total) * 100,
+    }
+
+    nps = porcentajes["promotores"] - porcentajes["detractores"]
+
+    print(f"""
+    promedio de NPS: {nps}
+    """)
+    print(separador_de_reportes)
+
+
+reporte_10()
 
 
 def reporte_11():
