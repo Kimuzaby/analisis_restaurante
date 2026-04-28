@@ -72,23 +72,84 @@ encuestado = {
 
 
 def reporte_1():
-    pass
+    resultado = {"comida_preferida": {}}
+
+    for comida in restaurante["preferencias"]["comida"]:
+        if comida in resultado["comida_preferida"]:
+            resultado["comida_preferida"][comida] += 1
+        else:
+            resultado["comida_preferida"][comida] = 1
+
+    return resultado
 
 
 def reporte_2():
-    pass
+    resultado = {"frecuencia_consumo": {}}
+
+    for frecuencia in restaurante["preferencias"]["frecuencia"]:
+        if frecuencia in resultado["frecuencia_consumo"]:
+            resultado["frecuencia_consumo"][frecuencia] += 1
+        else:
+            resultado["frecuencia_consumo"][frecuencia] = 1
+
+    return resultado
+
 
 
 def reporte_3():
-    pass
+    datos = restaurante["consumo"]["gasto"]
+    total = 0
+
+    for gasto in datos:
+        total += gasto
+
+    resultado = {
+        "gasto": {
+            "total": total,
+            "cantidad": len(datos),
+            "promedio": total / len(datos),
+        }
+    }
+    return resultado
 
 
 def reporte_4():
-    pass
+    datos = restaurante["experiencia"]["producto"]
+    total = 0
+
+    for valor in datos:
+        total += valor
+
+    resultado = {
+        "satisfaccion_producto": {
+            "promedio": total / len(datos)
+        }
+    }
+
+    return resultado
 
 
 def reporte_5():
-    pass
+    datos = restaurante["experiencia"]["servicio"]
+    total = 0
+
+    for valor in datos:
+        total += valor
+
+    resultado = {
+        "satisfaccion_servicio": {
+            "promedio": total / len(datos)
+        }
+    }
+
+    return resultado
+
+# Resultados
+print("REPORTE 1:", reporte_1())
+print("REPORTE 2:", reporte_2())
+print("REPORTE 3:", reporte_3())
+print("REPORTE 4:", reporte_4())
+print("REPORTE 5:", reporte_5())
 
 
 # pasa por todas las filas de la columna experiencia tiempo, por cada coincidencia, se en
