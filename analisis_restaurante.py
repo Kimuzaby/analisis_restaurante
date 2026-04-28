@@ -70,24 +70,84 @@ encuestado = {
 
 
 def reporte_1():
-    pass
+    resultado = {"comida_preferida": {}}
+
+    for comida in restaurante["preferencias"]["comida"]:
+        if comida in resultado["comida_preferida"]:
+            resultado["comida_preferida"][comida] += 1
+        else:
+            resultado["comida_preferida"][comida] = 1
+
+    return resultado
 
 
 def reporte_2():
-    pass
+    resultado = {"frecuencia_consumo": {}}
+
+    for frecuencia in restaurante["preferencias"]["frecuencia"]:
+        if frecuencia in resultado["frecuencia_consumo"]:
+            resultado["frecuencia_consumo"][frecuencia] += 1
+        else:
+            resultado["frecuencia_consumo"][frecuencia] = 1
+
+    return resultado
+
 
 
 def reporte_3():
-    pass
+    datos = restaurante["consumo"]["gasto"]
+    total = 0
+
+    for gasto in datos:
+        total += gasto
+
+    resultado = {
+        "gasto": {
+            "total": total,
+            "cantidad": len(datos),
+            "promedio": total / len(datos),
+        }
+    }
+    return resultado
 
 
 def reporte_4():
-    pass
+    datos = restaurante["experiencia"]["producto"]
+    total = 0
+
+    for valor in datos:
+        total += valor
+
+    resultado = {
+        "satisfaccion_producto": {
+            "promedio": total / len(datos)
+        }
+    }
+
+    return resultado
 
 
 def reporte_5():
-    pass
+    datos = restaurante["experiencia"]["servicio"]
+    total = 0
 
+    for valor in datos:
+        total += valor
+
+    resultado = {
+        "satisfaccion_servicio": {
+            "promedio": total / len(datos)
+        }
+    }
+
+    return resultado
+
+# Resultados
+print("REPORTE 1:", reporte_1())
+print("REPORTE 2:", reporte_2())
+print("REPORTE 3:", reporte_3())
+print("REPORTE 4:", reporte_4())
+print("REPORTE 5:", reporte_5())
 
 def reporte_6():
     pass
@@ -207,7 +267,7 @@ def reporte_19():
 
 # Perfil del cliente promedio
 def reporte_20():
-    print("\nReporte 20: Perfil del Cliente Promedio")
+    print("\n--- Reporte 20: Perfil del Cliente Promedio ---")
     total_clientes = len(restaurante["id"])
     
     if total_clientes == 0:
@@ -224,3 +284,26 @@ def reporte_20():
             conteo[item] = conteo.get(item, 0) + 1
         # Obtener la llave con el valor más alto
         return max(conteo.items(), key=lambda x: x[1])[0]
+
+    # Cálculos estadísticos
+    comida_favorita = obtener_moda(restaurante["preferencias"]["comida"])
+    frecuencia_tip = obtener_moda(restaurante["preferencias"]["frecuencia"])
+    gasto_prom = calcular_promedio(restaurante["consumo"]["gasto"])
+    sat_producto_prom = calcular_promedio(restaurante["experiencia"]["producto"])
+    sat_servicio_prom = calcular_promedio(restaurante["experiencia"]["servicio"])
+    tiempo_tipico = obtener_moda(restaurante["experiencia"]["tiempo"])
+    precio_tipico = obtener_moda(restaurante["experiencia"]["precio"])
+    recomienda_prom = calcular_promedio(restaurante["nps"]["recomendacion"])
+    porcentaje_retorno = (sum(restaurante["nps"]["volveria"]) / total_clientes) * 100
+
+    # Imprimir el perfil final
+    print(f"Comida Preferida             : {comida_favorita}")
+    print(f"Frecuencia de Consumo Típica : {frecuencia_tip}")
+    print(f"Gasto Promedio               : ${gasto_prom:.2f}")
+    print(f"Tiempo de Entrega Común      : {tiempo_tipico}")
+    print(f"Percepción de Precio Típica  : {precio_tipico}")
+    print(f"Promedio Satisfacción Prod.  : {sat_producto_prom:.2f} / 10")
+    print(f"Promedio Satisfacción Serv.  : {sat_servicio_prom:.2f} / 10")
+    print(f"Promedio Recomendación (NPS) : {recomienda_prom:.2f} / 10")
+    print(f"Probabilidad de Retorno      : {porcentaje_retorno:.1f}% de clientes")
+reporte_20()
